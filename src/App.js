@@ -4,6 +4,8 @@ export default function App() {
   return (
     <div className='App'>
       <Navigation />
+      <div className='main'></div>
+      <Footer />
     </div>
   );
 }
@@ -28,4 +30,17 @@ function Buttons() {
 
 function Button({ children }) {
   return <button className='button'>{children}</button>;
+}
+
+function Footer() {
+  return (
+    <div className='footer'>
+      <p>
+        Repository :{" "}
+        <a href='https://github.com/hoj0806/react-random-color-picker'>
+          https://github.com/hoj0806/react-random-color-picker
+        </a>
+      </p>
+    </div>
+  );
 }
