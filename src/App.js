@@ -1,7 +1,31 @@
 import "./App.css";
 
-function App() {
-  return <div className='App'>Hello</div>;
+export default function App() {
+  return (
+    <div className='App'>
+      <Navigation />
+    </div>
+  );
 }
 
-export default App;
+function Navigation() {
+  return (
+    <header className='nav'>
+      <p className='title'>random color picker</p>
+      <Buttons />
+    </header>
+  );
+}
+
+function Buttons() {
+  return (
+    <div className='button-mode-container'>
+      <Button>hex</Button>
+      <Button>keyword</Button>
+    </div>
+  );
+}
+
+function Button({ children }) {
+  return <button className='button'>{children}</button>;
+}
