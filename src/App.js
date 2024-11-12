@@ -2,44 +2,43 @@ import { useState } from "react";
 import "./App.css";
 
 export default function App() {
+  const [colorName, setColorName] = useState(null);
   return (
     <div className='App'>
-      <Navigation />
-      <Main />
+      <Navigation setColorName={setColorName} colorName={colorName} />
+      <Main colorName={colorName} />
       <Footer />
     </div>
   );
 }
 
-function Navigation() {
-  const [selectMode, setSelectMode] = useState(null);
-
-  function handleSelectMode(mode) {
-    setSelectMode(mode);
-  }
+function Navigation({ colorName, setColorName }) {
   return (
     <header className='nav'>
       <p className='title'>random color picker</p>
-      <Buttons onSelectMode={handleSelectMode} />
-      {selectMode ? null : <p className='notification'>Please select mode</p>}
+      <Buttons setColorName={setColorName} />
+      {colorName ? null : <p className='notification'>Please select mode</p>}
     </header>
   );
 }
 
-function Buttons({ onSelectMode }) {
+function Buttons({ setColorName }) {
+  function handleClickHexColor() {
+    const randomHexColor =
+      "#" +
+      Math.floor(Math.random() * 16777215)
+        .toString(16)
+        .padStart(6, "0");
+    setColorName(randomHexColor);
+  }
+
   return (
     <div className='button-mode-container'>
-      <Button onSelectMode={onSelectMode}>hex</Button>
-      <Button onSelectMode={onSelectMode}>named</Button>
+      <button className='button' onClick={handleClickHexColor}>
+        hex
+      </button>
+      <button className='button'>named</button>
     </div>
-  );
-}
-
-function Button({ children, onSelectMode }) {
-  return (
-    <button className='button' onClick={() => onSelectMode(children)}>
-      {children}
-    </button>
   );
 }
 
@@ -56,9 +55,9 @@ function Footer() {
   );
 }
 
-function Main() {
+function Main({ colorName }) {
   return (
-    <div className='main'>
+    <div className='main' style={{ background: colorName }}>
       <ColorBox />
     </div>
   );
