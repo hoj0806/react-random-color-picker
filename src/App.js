@@ -6,7 +6,7 @@ export default function App() {
   return (
     <div className='App'>
       <Navigation setColorName={setColorName} colorName={colorName} />
-      <Main colorName={colorName} />
+      <Main colorName={colorName} setColorName={setColorName} />
       <Footer />
     </div>
   );
@@ -23,20 +23,9 @@ function Navigation({ colorName, setColorName }) {
 }
 
 function Buttons({ setColorName }) {
-  function handleClickHexColor() {
-    const randomHexColor =
-      "#" +
-      Math.floor(Math.random() * 16777215)
-        .toString(16)
-        .padStart(6, "0");
-    setColorName(randomHexColor);
-  }
-
   return (
     <div className='button-mode-container'>
-      <button className='button' onClick={handleClickHexColor}>
-        hex
-      </button>
+      <button className='button'>hex</button>
       <button className='button'>named</button>
     </div>
   );
@@ -55,9 +44,27 @@ function Footer() {
   );
 }
 
-function Main({ colorName }) {
+function Main({ colorName, setColorName }) {
+  function generateRandomHexColor() {
+    const randomHexColor =
+      "#" +
+      Math.floor(Math.random() * 16777215)
+        .toString(16)
+        .padStart(6, "0");
+    return randomHexColor;
+  }
+
+  function handleClickRandomColor() {
+    if (colorName.includes("#")) {
+      setColorName(generateRandomHexColor());
+    }
+  }
   return (
-    <div className='main' style={{ background: colorName }}>
+    <div
+      className='main'
+      style={{ background: colorName }}
+      onClick={handleClickRandomColor}
+    >
       <ColorBox />
     </div>
   );
