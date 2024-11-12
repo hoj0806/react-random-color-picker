@@ -4,7 +4,7 @@ export default function App() {
   return (
     <div className='App'>
       <Navigation />
-      <div className='main'></div>
+      <Main />
       <Footer />
     </div>
   );
@@ -41,6 +41,22 @@ function Footer() {
           https://github.com/hoj0806/react-random-color-picker
         </a>
       </p>
+    </div>
+  );
+}
+
+function Main() {
+  return (
+    <div className='main'>
+      <ColorBox />
+    </div>
+  );
+}
+
+function ColorBox() {
+  return (
+    <div className='color-box'>
+      Color<div className='color-code-box'>#fafafa</div>
     </div>
   );
 }
