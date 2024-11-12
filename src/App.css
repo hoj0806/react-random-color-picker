@@ -15,7 +15,14 @@
   font-weight: bold;
   color: #333;
 }
-
+.notification {
+  position: absolute;
+  top: 20%;
+  right: 5%;
+  font-size: 2rem;
+  color: #ffeb3b;
+  font-weight: 700;
+}
 .button-mode-container {
   position: absolute;
   top: 60%;

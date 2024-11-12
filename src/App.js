@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./App.css";
 
 export default function App() {
@@ -11,25 +12,35 @@ export default function App() {
 }
 
 function Navigation() {
+  const [selectMode, setSelectMode] = useState(null);
+
+  function handleSelectMode(mode) {
+    setSelectMode(mode);
+  }
   return (
     <header className='nav'>
       <p className='title'>random color picker</p>
-      <Buttons />
+      <Buttons onSelectMode={handleSelectMode} />
+      {selectMode ? null : <p className='notification'>Please select mode</p>}
     </header>
   );
 }
 
-function Buttons() {
+function Buttons({ onSelectMode }) {
   return (
     <div className='button-mode-container'>
-      <Button>hex</Button>
-      <Button>keyword</Button>
+      <Button onSelectMode={onSelectMode}>hex</Button>
+      <Button onSelectMode={onSelectMode}>named</Button>
     </div>
   );
 }
 
-function Button({ children }) {
-  return <button className='button'>{children}</button>;
+function Button({ children, onSelectMode }) {
+  return (
+    <button className='button' onClick={() => onSelectMode(children)}>
+      {children}
+    </button>
+  );
 }
 
 function Footer() {
