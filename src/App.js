@@ -71,7 +71,7 @@ const cssNamedColors = [
 ];
 
 export default function App() {
-  const [colorName, setColorName] = useState(null);
+  const [colorName, setColorName] = useState("");
   const [mode, setMode] = useState(null);
 
   function generateRandomHexColor() {
