@@ -74,58 +74,6 @@ export default function App() {
   const [colorName, setColorName] = useState(null);
   const [mode, setMode] = useState(null);
 
-  function handleClickMode(mode) {
-    setMode(mode);
-  }
-
-  return (
-    <div className='App'>
-      <Navigation onMode={handleClickMode} mode={mode} />
-      <Main colorName={colorName} setColorName={setColorName} mode={mode} />
-      <Footer />
-    </div>
-  );
-}
-
-function Navigation({ onMode, mode }) {
-  return (
-    <header className='nav'>
-      <p className='title'>random color picker</p>
-      <Buttons>
-        <Button onMode={onMode} colorMode='hex' />
-        <Button onMode={onMode} colorMode='named' />
-      </Buttons>
-      {mode ? null : <p className='notification'>Please select mode</p>}
-    </header>
-  );
-}
-
-function Buttons({ children }) {
-  return <div className='button-mode-container'>{children}</div>;
-}
-
-function Button({ onMode, colorMode }) {
-  return (
-    <button className='button' onClick={() => onMode(colorMode)}>
-      {colorMode}
-    </button>
-  );
-}
-
-function Footer() {
-  return (
-    <div className='footer'>
-      <p>
-        Repository :{" "}
-        <a href='https://github.com/hoj0806/react-random-color-picker'>
-          https://github.com/hoj0806/react-random-color-picker
-        </a>
-      </p>
-    </div>
-  );
-}
-
-function Main({ colorName, setColorName, mode }) {
   function generateRandomHexColor() {
     const randomHexColor =
       "#" +
@@ -139,6 +87,7 @@ function Main({ colorName, setColorName, mode }) {
     const randomIndex = Math.floor(Math.random() * cssNamedColors.length);
     return cssNamedColors[randomIndex];
   }
+
   function handleClickRandomColor() {
     if (mode === "hex") {
       setColorName(generateRandomHexColor());
@@ -147,22 +96,94 @@ function Main({ colorName, setColorName, mode }) {
     }
   }
 
+  function handleClickMode(mode) {
+    setMode(mode);
+  }
+
   return (
-    <div
-      className='main'
-      style={{ background: colorName }}
-      onClick={handleClickRandomColor}
-    >
-      <ColorBox colorName={colorName} />
+    <div className='App'>
+      <Navigation onMode={handleClickMode} mode={mode} />
+
+      <Main colorName={colorName}>
+        <ColorBox onRandomColor={handleClickRandomColor} colorName={colorName}>
+          <ColorCodeBox colorName={colorName} />
+        </ColorBox>
+      </Main>
+
+      <Footer />
     </div>
   );
 }
 
-function ColorBox({ colorName }) {
+function Navigation({ onMode, mode }) {
   return (
-    <div className='color-box'>
-      Color
-      <div className='color-code-box'>{colorName ? colorName : "#fafafa"}</div>
+    <header className='nav'>
+      <p className='title'>random color picker</p>
+      <Buttons>
+        <Button onMode={onMode} colorMode='hex' mode={mode} />
+        <Button onMode={onMode} colorMode='named' mode={mode} />
+      </Buttons>
+
+      <p className='notification'>
+        {mode === null ? "Please select mode" : "Click Color box!!"}
+      </p>
+    </header>
+  );
+}
+
+function Buttons({ children }) {
+  return <div className='button-mode-container'>{children}</div>;
+}
+
+function Button({ onMode, colorMode, mode }) {
+  const selected = colorMode === mode;
+  return (
+    <button
+      className={`button ${selected ? "selected" : ""}`}
+      onClick={() => onMode(colorMode)}
+    >
+      {colorMode}
+    </button>
+  );
+}
+
+function Footer() {
+  return (
+    <div className='footer'>
+      <p>
+        Repository :
+        <a href='https://github.com/hoj0806/react-random-color-picker'>
+          https://github.com/hoj0806/react-random-color-picker
+        </a>
+      </p>
     </div>
+  );
+}
+
+function Main({ colorName, children }) {
+  return (
+    <div className='main' style={{ background: colorName }}>
+      {children}
+    </div>
+  );
+}
+
+function ColorBox({ children, onRandomColor, colorName }) {
+  const colorNameLength = colorName.length;
+  return (
+    <div
+      className='color-box'
+      onClick={onRandomColor}
+      style={{ width: `${colorNameLength * 7}rem` }}
+    >
+      Color
+      {children}
+    </div>
+  );
+}
+
+function ColorCodeBox({ colorName }) {
+  return (
+    <div className='color-code-box'>{colorName ? colorName : "#fafafa"}</div>
   );
 }
