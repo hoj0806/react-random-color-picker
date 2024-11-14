@@ -89,11 +89,9 @@ export default function App() {
   }
 
   function handleClickRandomColor() {
-    if (mode === "hex") {
-      setColorName(generateRandomHexColor());
-    } else if (mode === "named") {
-      setColorName(generateRandomNamedColor());
-    }
+    mode === "hex"
+      ? setColorName(generateRandomHexColor())
+      : setColorName(generateRandomNamedColor());
   }
 
   function handleClickMode(mode) {
