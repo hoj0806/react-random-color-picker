@@ -1,6 +1,75 @@
 import { useState } from "react";
 import "./App.css";
 
+const cssNamedColors = [
+  "black",
+  "white",
+  "red",
+  "green",
+  "blue",
+  "yellow",
+  "cyan",
+  "magenta",
+  "gray",
+  "silver",
+  "maroon",
+  "olive",
+  "lime",
+  "aqua",
+  "fuchsia",
+  "teal",
+  "navy",
+  "purple",
+  "orange",
+  "pink",
+  "brown",
+  "beige",
+  "ivory",
+  "lavender",
+  "coral",
+  "turquoise",
+  "salmon",
+  "gold",
+  "silver",
+  "plum",
+  "indigo",
+  "violet",
+  "chocolate",
+  "peru",
+  "orchid",
+  "tomato",
+  "crimson",
+  "firebrick",
+  "sienna",
+  "darkgreen",
+  "darkblue",
+  "darkred",
+  "darkorange",
+  "darkviolet",
+  "darkslategray",
+  "lightgray",
+  "lightgreen",
+  "lightblue",
+  "lightpink",
+  "lightsalmon",
+  "lightseagreen",
+  "lightyellow",
+  "lightcyan",
+  "lightcoral",
+  "lightsteelblue",
+  "lightgoldenrodyellow",
+  "darkslateblue",
+  "mediumvioletred",
+  "darkturquoise",
+  "mediumorchid",
+  "mediumseagreen",
+  "midnightblue",
+  "chartreuse",
+  "darkkhaki",
+  "darkgoldenrod",
+  "darkmagenta",
+];
+
 export default function App() {
   const [colorName, setColorName] = useState(null);
   const [mode, setMode] = useState(null);
@@ -8,38 +77,37 @@ export default function App() {
   function handleClickMode(mode) {
     setMode(mode);
   }
+
   return (
     <div className='App'>
-      <Navigation colorName={colorName} onMode={handleClickMode} />
+      <Navigation onMode={handleClickMode} mode={mode} />
       <Main colorName={colorName} setColorName={setColorName} mode={mode} />
       <Footer />
     </div>
   );
 }
 
-function Navigation({ colorName, onMode }) {
+function Navigation({ onMode, mode }) {
   return (
     <header className='nav'>
       <p className='title'>random color picker</p>
-      <Buttons onMode={onMode} />
-      {colorName ? null : <p className='notification'>Please select mode</p>}
+      <Buttons>
+        <Button onMode={onMode} colorMode='hex' />
+        <Button onMode={onMode} colorMode='named' />
+      </Buttons>
+      {mode ? null : <p className='notification'>Please select mode</p>}
     </header>
   );
 }
 
-function Buttons({ onMode }) {
-  return (
-    <div className='button-mode-container'>
-      <Button onMode={onMode}>hex</Button>
-      <Button onMode={onMode}>named</Button>
-    </div>
-  );
+function Buttons({ children }) {
+  return <div className='button-mode-container'>{children}</div>;
 }
 
-function Button({ children, onMode }) {
+function Button({ onMode, colorMode }) {
   return (
-    <button className='button' onClick={() => onMode(children)}>
-      {children}
+    <button className='button' onClick={() => onMode(colorMode)}>
+      {colorMode}
     </button>
   );
 }
@@ -67,9 +135,15 @@ function Main({ colorName, setColorName, mode }) {
     return randomHexColor;
   }
 
+  function generateRandomNamedColor() {
+    const randomIndex = Math.floor(Math.random() * cssNamedColors.length);
+    return cssNamedColors[randomIndex];
+  }
   function handleClickRandomColor() {
     if (mode === "hex") {
       setColorName(generateRandomHexColor());
+    } else if (mode === "named") {
+      setColorName(generateRandomNamedColor());
     }
   }
 
